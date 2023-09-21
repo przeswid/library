@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
-import java.util.Optional;
 
 class FindBookByTitleTest {
 
@@ -29,9 +28,25 @@ class FindBookByTitleTest {
     ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
     System.setIn(in);
     // when
-    Optional<Book> bookByTitle = app.findBookByTitle();
+    List<Book> bookByTitle = app.findBookByTitle();
     // then
     Assertions.assertThat(bookByTitle).contains(book);
+  }
+
+  @Test
+  void shouldFindTwoBooksThatContainLetterA_whenTwoBooksMatchExpression() {
+    // given
+    Book daVinciBook = new Book("The Da Vinci Code", "1234567890", List.of("John Doe"));
+    Book theHistoryBook = new Book("A History of Adventure", "1234567890", List.of("John Doe"));
+    BookRepositoryInMemory.INSTANCE.add(daVinciBook);
+    BookRepositoryInMemory.INSTANCE.add(theHistoryBook);
+
+    ByteArrayInputStream in = new ByteArrayInputStream("a".getBytes());
+    System.setIn(in);
+    // when
+    List<Book> bookByTitle = app.findBookByTitle();
+    // then
+    Assertions.assertThat(bookByTitle).containsExactlyInAnyOrder(daVinciBook, theHistoryBook);
   }
 
   @Test
@@ -41,7 +56,7 @@ class FindBookByTitleTest {
     ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
     System.setIn(in);
     // when
-    Optional<Book> bookByTitle = app.findBookByTitle();
+    List<Book> bookByTitle = app.findBookByTitle();
     // then
     Assertions.assertThat(bookByTitle).isEmpty();
   }

@@ -3,10 +3,7 @@ package org.boldare.books.infrastructure;
 import org.boldare.books.model.book.Book;
 import org.boldare.books.model.book.BookRepository;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public final class BookRepositoryInMemory implements BookRepository {
 
@@ -21,9 +18,9 @@ public final class BookRepositoryInMemory implements BookRepository {
     books.add(book);
   }
 
-  public Optional<Book> getByTitle(String title) {
+  public List<Book> getByTitle(String title) {
     String titleLower = title.toLowerCase();
-    return books.stream().filter(book -> book.getTitle().toLowerCase().equals(titleLower)).findFirst();
+    return books.stream().filter(book -> book.getTitle().toLowerCase().contains(titleLower)).toList();
   }
 
   public Collection<Book> getAll() {

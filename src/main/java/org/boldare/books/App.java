@@ -5,7 +5,6 @@ import org.boldare.books.model.book.Book;
 import org.boldare.books.model.book.BookRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class App {
@@ -19,10 +18,10 @@ public class App {
   public static void main(String[] args) {
     App app = new App();
     app.showAll();
-    app.findBookByTitle().ifPresent(System.out::println);
+    app.findBookByTitle().forEach(System.out::println);
   }
 
-  public Optional<Book> findBookByTitle() {
+  public List<Book> findBookByTitle() {
     System.out.println("Enter title of book to find:");
     String title = readFromConsoleInput();
     return repository.getByTitle(title);
