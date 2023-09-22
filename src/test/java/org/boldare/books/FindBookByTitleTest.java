@@ -23,6 +23,8 @@ class FindBookByTitleTest {
     // given
     String title = "My test book";
     Book book = new Book(title, "1234567890", List.of("John Doe"));
+    book.addBookCopy("1");
+
     BookRepositoryInMemory.INSTANCE.add(book);
 
     ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
@@ -37,7 +39,9 @@ class FindBookByTitleTest {
   void shouldFindTwoBooksThatContainLetterA_whenTwoBooksMatchExpression() {
     // given
     Book daVinciBook = new Book("The Da Vinci Code", "1234567890", List.of("John Doe"));
+    daVinciBook.addBookCopy("1");
     Book theHistoryBook = new Book("A History of Adventure", "1234567890", List.of("John Doe"));
+    theHistoryBook.addBookCopy("1");
     BookRepositoryInMemory.INSTANCE.add(daVinciBook);
     BookRepositoryInMemory.INSTANCE.add(theHistoryBook);
 

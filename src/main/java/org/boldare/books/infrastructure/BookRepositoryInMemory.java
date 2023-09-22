@@ -18,9 +18,13 @@ public final class BookRepositoryInMemory implements BookRepository {
     books.add(book);
   }
 
-  public List<Book> getByTitle(String title) {
+  public List<Book> searchByTitle(String title) {
     String titleLower = title.toLowerCase();
-    return books.stream().filter(book -> book.getTitle().toLowerCase().contains(titleLower)).toList();
+    return books.stream().filter(b -> hasTitle(b, titleLower)).filter(Book::hasAvailableCopy).toList();
+  }
+
+  public Optional<Book> getByTitle(String title) {
+    return books.stream().filter(b -> b.getTitle().equals(title)).findFirst();
   }
 
   public Collection<Book> getAll() {
@@ -29,5 +33,9 @@ public final class BookRepositoryInMemory implements BookRepository {
 
   public void removeAll() {
     books.clear();
+  }
+
+  private boolean hasTitle(Book book, String title) {
+    return book.getTitle().toLowerCase().contains(title);
   }
 }
