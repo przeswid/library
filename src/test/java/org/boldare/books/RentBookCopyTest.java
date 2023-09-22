@@ -30,7 +30,7 @@ class RentBookCopyTest {
     ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
     System.setIn(in);
     // when
-    app.rentBookCopy(title, bookCopyId);
+    app.rentBookCopy(title, bookCopyId, "John123");
     // then
     Assertions.assertThat(BookRepositoryInMemory.INSTANCE.getByTitle(title)).isNotEmpty();
   }
@@ -47,8 +47,8 @@ class RentBookCopyTest {
 
     BookRepositoryInMemory.INSTANCE.add(book);
 
-    app.rentBookCopy(title, firstBookCopyId);
-    app.rentBookCopy(title, secondBookCopyId);
+    app.rentBookCopy(title, firstBookCopyId, "john123");
+    app.rentBookCopy(title, secondBookCopyId, "John123");
 
     ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
     System.setIn(in);

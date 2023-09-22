@@ -31,10 +31,12 @@ public class App {
     return bookRepository.searchByTitle(title);
   }
 
-  public void rentBookCopy(String title, String bookCopyId) {
+  public void rentBookCopy(String title, String bookCopyId, String clientIdentifier) {
     Book book = bookRepository.getByTitle(title)
       .orElseThrow(() -> new IllegalStateException("Book not found"));
-    book.rentBookCopy(bookCopyId, realDateTimeProvider.getCurrentDateTime());
+
+    Book.RentDataDto rentData = new Book.RentDataDto(bookCopyId, realDateTimeProvider.getCurrentDateTime(), clientIdentifier);
+    book.rentBookCopy(rentData);
   }
 
   public void showAll() {

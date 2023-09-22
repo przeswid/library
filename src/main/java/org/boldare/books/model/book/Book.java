@@ -19,6 +19,9 @@ public final class Book {
   @Getter(AccessLevel.NONE)
   private final Set<BookCopy> copies = new HashSet<>();
 
+  public static record RentDataDto(String bookCopyIdentifier, OffsetDateTime rentDate, String clientIdfentifier) {
+  }
+
   public Book(String title, String isbn, List<String> authors) {
     validateTitle(title);
     validateAuthors(authors);
@@ -34,12 +37,12 @@ public final class Book {
     copies.add(new BookCopy(bookCopyIdentifier));
   }
 
-  public void rentBookCopy(String bookCopyIdentifier, OffsetDateTime rentDate) {
+  public void rentBookCopy(RentDataDto rentData) {
     copies.stream()
-      .filter(bookCopy -> bookCopy.getId().equals(bookCopyIdentifier))
+      .filter(bookCopy -> bookCopy.getId().equals(rentData.bookCopyIdentifier))
       .findFirst()
       .orElseThrow(() -> new IllegalArgumentException("Book copy not found"))
-      .rentIt(rentDate);
+      .rentIt(rentData.rentDate, rentData.clientIdfentifier);
   }
 
   public boolean hasAvailableCopy() {
