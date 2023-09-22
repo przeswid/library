@@ -1,7 +1,7 @@
 package org.boldare.books.infrastructure;
 
-import org.boldare.books.model.book.Book;
-import org.boldare.books.model.book.BookRepository;
+import org.boldare.books.domain.book.Book;
+import org.boldare.books.domain.book.BookRepository;
 
 import java.util.*;
 

@@ -1,13 +1,16 @@
-package org.boldare.books.model.book;
+package org.boldare.books.domain.book;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 public interface BookRepository {
   void add(Book book);
-  List<Book> searchByTitle(String title);
+
+  Collection<Book> searchByTitle(String title);
 
   Optional<Book> getByTitle(String title);
-  Iterable<Book> getAll();
+
+  Collection<Book> getAll();
+
   void removeAll();
 }

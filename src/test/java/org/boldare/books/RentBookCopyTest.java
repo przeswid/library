@@ -1,21 +1,25 @@
 package org.boldare.books;
 
 import org.assertj.core.api.Assertions;
+import org.boldare.books.application.BookService;
+import org.boldare.books.domain.book.Book;
+import org.boldare.books.domain.book.BookRepository;
 import org.boldare.books.infrastructure.BookRepositoryInMemory;
-import org.boldare.books.model.book.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
+import java.util.Collection;
 import java.util.List;
 
 class RentBookCopyTest {
 
-  private final App app = new App();
+  private final BookRepository bookRepository = BookRepositoryInMemory.INSTANCE;
+
+  private final BookService bookService = new BookService(bookRepository);
 
   @BeforeEach
   void beforeEachTest() {
-    BookRepositoryInMemory.INSTANCE.removeAll();
+    bookRepository.removeAll();
   }
 
   @Test
@@ -25,14 +29,11 @@ class RentBookCopyTest {
     String bookCopyId = "1";
     Book book = new Book(title, "1234567890", List.of("John Doe"));
     book.addBookCopy(bookCopyId);
-    BookRepositoryInMemory.INSTANCE.add(book);
-
-    ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
-    System.setIn(in);
+    bookRepository.add(book);
     // when
-    app.rentBookCopy(title, bookCopyId, "John123");
+    bookService.rentBookCopy(title, bookCopyId, "John123");
     // then
-    Assertions.assertThat(BookRepositoryInMemory.INSTANCE.getByTitle(title)).isNotEmpty();
+    Assertions.assertThat(bookRepository.getByTitle(title)).isNotEmpty();
   }
 
   @Test
@@ -45,15 +46,12 @@ class RentBookCopyTest {
     book.addBookCopy(firstBookCopyId);
     book.addBookCopy(secondBookCopyId);
 
-    BookRepositoryInMemory.INSTANCE.add(book);
+    bookRepository.add(book);
 
-    app.rentBookCopy(title, firstBookCopyId, "john123");
-    app.rentBookCopy(title, secondBookCopyId, "John123");
-
-    ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
-    System.setIn(in);
+    bookService.rentBookCopy(title, firstBookCopyId, "john123");
+    bookService.rentBookCopy(title, secondBookCopyId, "John123");
     // when
-    List<Book> bookByTitle = app.findBookByTitle();
+    Collection<Book> bookByTitle = bookService.findBookByTitle(title);
     // then
     Assertions.assertThat(bookByTitle).isEmpty();
   }

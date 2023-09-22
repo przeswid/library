@@ -1,7 +1,7 @@
 package org.boldare.books.infrastructure;
 
-import org.boldare.books.model.client.Client;
-import org.boldare.books.model.client.ClientRepository;
+import org.boldare.books.domain.client.Client;
+import org.boldare.books.domain.client.ClientRepository;
 
 import java.util.Collection;
 import java.util.HashSet;

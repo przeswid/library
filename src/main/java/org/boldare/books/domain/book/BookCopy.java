@@ -1,12 +1,12 @@
-package org.boldare.books.model.book;
+package org.boldare.books.domain.book;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.boldare.books.model.book.location.Desk;
-import org.boldare.books.model.book.location.Location;
-import org.boldare.books.model.book.location.Renter;
+import org.boldare.books.domain.book.location.Desk;
+import org.boldare.books.domain.book.location.Location;
+import org.boldare.books.domain.book.location.Renter;
 
 import java.time.OffsetDateTime;
 

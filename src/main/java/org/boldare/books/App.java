@@ -1,10 +1,9 @@
 package org.boldare.books;
 
-import org.boldare.books.commons.DateTimeProvider;
-import org.boldare.books.commons.RealDateTimeProvider;
+import org.boldare.books.application.BookService;
+import org.boldare.books.domain.book.Book;
+import org.boldare.books.domain.book.BookRepository;
 import org.boldare.books.infrastructure.BookRepositoryInMemory;
-import org.boldare.books.model.book.Book;
-import org.boldare.books.model.book.BookRepository;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,8 +11,7 @@ import java.util.Scanner;
 public class App {
 
   private final BookRepository bookRepository = BookRepositoryInMemory.INSTANCE;
-
-  private final DateTimeProvider realDateTimeProvider = new RealDateTimeProvider();
+  private final BookService bookService = new BookService(bookRepository);
 
   public App() {
     add10FamousBooks();
@@ -22,25 +20,18 @@ public class App {
   public static void main(String[] args) {
     App app = new App();
     app.showAll();
-    app.findBookByTitle().forEach(System.out::println);
+    app.findBookByTitle();
   }
 
-  public List<Book> findBookByTitle() {
+  private void findBookByTitle() {
     System.out.println("Enter title of book to find:");
     String title = readFromConsoleInput();
-    return bookRepository.searchByTitle(title);
+    bookService.findBookByTitle(title).forEach(System.out::println);
   }
 
-  public void rentBookCopy(String title, String bookCopyId, String clientIdentifier) {
-    Book book = bookRepository.getByTitle(title)
-      .orElseThrow(() -> new IllegalStateException("Book not found"));
-
-    Book.RentDataDto rentData = new Book.RentDataDto(bookCopyId, realDateTimeProvider.getCurrentDateTime(), clientIdentifier);
-    book.rentBookCopy(rentData);
-  }
-
-  public void showAll() {
-    bookRepository.getAll().forEach(System.out::println);
+  private void showAll() {
+    System.out.println("All books:");
+    bookService.findAllBooks().forEach(System.out::println);
   }
 
   private void add10FamousBooks() {
@@ -68,3 +59,4 @@ public class App {
     return scanner.nextLine();
   }
 }
+

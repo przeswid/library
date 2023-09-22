@@ -1,21 +1,25 @@
 package org.boldare.books;
 
 import org.assertj.core.api.Assertions;
+import org.boldare.books.application.BookService;
+import org.boldare.books.domain.book.Book;
+import org.boldare.books.domain.book.BookRepository;
 import org.boldare.books.infrastructure.BookRepositoryInMemory;
-import org.boldare.books.model.book.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
+import java.util.Collection;
 import java.util.List;
 
 class FindBookByTitleTest {
 
-  private final App app = new App();
+  private final BookRepository bookRepository = BookRepositoryInMemory.INSTANCE;
+
+  private final BookService bookService = new BookService(bookRepository);
 
   @BeforeEach
   void beforeEachTest() {
-    BookRepositoryInMemory.INSTANCE.removeAll();
+    bookRepository.removeAll();
   }
 
   @Test
@@ -24,13 +28,10 @@ class FindBookByTitleTest {
     String title = "My test book";
     Book book = new Book(title, "1234567890", List.of("John Doe"));
     book.addBookCopy("1");
+    bookRepository.add(book);
 
-    BookRepositoryInMemory.INSTANCE.add(book);
-
-    ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
-    System.setIn(in);
     // when
-    List<Book> bookByTitle = app.findBookByTitle();
+    Collection<Book> bookByTitle = bookService.findBookByTitle(title);
     // then
     Assertions.assertThat(bookByTitle).contains(book);
   }
@@ -42,13 +43,11 @@ class FindBookByTitleTest {
     daVinciBook.addBookCopy("1");
     Book theHistoryBook = new Book("A History of Adventure", "1234567890", List.of("John Doe"));
     theHistoryBook.addBookCopy("1");
-    BookRepositoryInMemory.INSTANCE.add(daVinciBook);
-    BookRepositoryInMemory.INSTANCE.add(theHistoryBook);
+    bookRepository.add(daVinciBook);
+    bookRepository.add(theHistoryBook);
 
-    ByteArrayInputStream in = new ByteArrayInputStream("a".getBytes());
-    System.setIn(in);
     // when
-    List<Book> bookByTitle = app.findBookByTitle();
+    Collection<Book> bookByTitle = bookService.findBookByTitle("a");
     // then
     Assertions.assertThat(bookByTitle).containsExactlyInAnyOrder(daVinciBook, theHistoryBook);
   }
@@ -57,10 +56,8 @@ class FindBookByTitleTest {
   void shouldNotFindMyTestBookByTitle_whenMyTestBookDoesntExist() {
     // given
     String title = "My test book";
-    ByteArrayInputStream in = new ByteArrayInputStream(title.getBytes());
-    System.setIn(in);
     // when
-    List<Book> bookByTitle = app.findBookByTitle();
+    Collection<Book> bookByTitle = bookService.findBookByTitle(title);
     // then
     Assertions.assertThat(bookByTitle).isEmpty();
   }

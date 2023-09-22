@@ -1,4 +1,4 @@
-package org.boldare.books.model.book;
+package org.boldare.books.domain.book;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ public final class Book {
   @Getter(AccessLevel.NONE)
   private final Set<BookCopy> copies = new HashSet<>();
 
-  public static record RentDataDto(String bookCopyIdentifier, OffsetDateTime rentDate, String clientIdfentifier) {
+  public record RentDataDto(String bookCopyIdentifier, OffsetDateTime rentDate, String clientIdfentifier) {
   }
 
   public Book(String title, String isbn, List<String> authors) {

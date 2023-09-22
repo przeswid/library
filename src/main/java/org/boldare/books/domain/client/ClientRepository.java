@@ -1,4 +1,4 @@
-package org.boldare.books.model.client;
+package org.boldare.books.domain.client;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package org.boldare.books.model.book.location;
+package org.boldare.books.domain.book.location;
 
 public final class Desk extends Location {
   public Desk() {
