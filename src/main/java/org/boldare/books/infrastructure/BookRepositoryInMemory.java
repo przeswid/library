@@ -1,9 +1,12 @@
 package org.boldare.books.infrastructure;
 
 import org.boldare.books.domain.book.Book;
+import org.boldare.books.domain.book.BookCopySnapshot;
 import org.boldare.books.domain.book.BookRepository;
+import org.boldare.books.domain.book.BookSnapshot;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public final class BookRepositoryInMemory implements BookRepository {
 
@@ -12,30 +15,34 @@ public final class BookRepositoryInMemory implements BookRepository {
   private BookRepositoryInMemory() {
   }
 
-  private final Set<Book> books = new HashSet<>();
+  private final Set<BookSnapshot> books = new HashSet<>();
 
   public void add(Book book) {
-    books.add(book);
+    books.add(book.toSnapshot());
   }
 
   public List<Book> searchByTitle(String title) {
     String titleLower = title.toLowerCase();
-    return books.stream().filter(b -> hasTitle(b, titleLower)).filter(Book::hasAvailableCopy).toList();
+    return books.stream()
+      .filter(b -> hasTitle(b, titleLower))
+      .filter(b -> b.copies()
+        .entrySet()
+        .stream()
+        .map(Map.Entry::getValue)
+        .anyMatch(Predicate.not(BookCopySnapshot::isBorrowed)))
+      .map(Book::fromSnapshot)
+      .toList();
   }
 
   public Optional<Book> getByTitle(String title) {
-    return books.stream().filter(b -> b.getTitle().equals(title)).findFirst();
+    return books.stream().filter(b -> b.title().equals(title)).findFirst().map(Book::fromSnapshot);
   }
 
   public Collection<Book> getAll() {
-    return books;
+    return books.stream().map(Book::fromSnapshot).toList();
   }
 
-  public void removeAll() {
-    books.clear();
-  }
-
-  private boolean hasTitle(Book book, String title) {
-    return book.getTitle().toLowerCase().contains(title);
+  private boolean hasTitle(BookSnapshot bookSnapshot, String title) {
+    return bookSnapshot.title().toLowerCase().contains(title);
   }
 }

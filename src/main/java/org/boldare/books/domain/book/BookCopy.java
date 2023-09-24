@@ -1,25 +1,14 @@
 package org.boldare.books.domain.book;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.ToString;
-import org.boldare.books.domain.book.location.Desk;
-import org.boldare.books.domain.book.location.Location;
-import org.boldare.books.domain.book.location.Renter;
 
 import java.time.OffsetDateTime;
 
-@RequiredArgsConstructor
-@Getter
+@AllArgsConstructor
 @ToString
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 final class BookCopy {
-
   private static final int MAX_BORROW_DAYS = 30;
-
-  @EqualsAndHashCode.Include
-  private final String id;
 
   private boolean isBorrowed;
 
@@ -27,14 +16,19 @@ final class BookCopy {
 
   private OffsetDateTime returnDate;
 
-  private Location location;
+  static BookCopy fromSnapshot(BookCopySnapshot bookCopySnapshot) {
+    return new BookCopy(bookCopySnapshot.isBorrowed(), bookCopySnapshot.borrowDate(), bookCopySnapshot.returnDate());
+  }
 
-  void borrowBook(OffsetDateTime borrowDate, String clientIdentifier) {
+  BookCopySnapshot toSnapshot() {
+    return new BookCopySnapshot(isBorrowed, borrowDate, returnDate);
+  }
+
+  void borrowBook(OffsetDateTime borrowDate) {
     validateIfBookIsNotAlreadyBorrowed();
     this.isBorrowed = true;
     this.borrowDate = borrowDate;
     this.returnDate = this.borrowDate.plusDays(MAX_BORROW_DAYS);
-    this.location = new Renter(clientIdentifier);
   }
 
   void returnBook() {
@@ -42,7 +36,6 @@ final class BookCopy {
     this.isBorrowed = false;
     this.borrowDate = null;
     this.returnDate = null;
-    this.location = new Desk();
   }
 
   private void validateIfBookIsBorrowed() {

@@ -1,30 +1,26 @@
 package org.boldare.books.domain.book;
 
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.ToString;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-@EqualsAndHashCode
-@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public final class Book {
 
+  @EqualsAndHashCode.Include
   private final String isbn;
-  private final String title;
+  private String title;
+  private BookCategory bookCategory;
   private final List<String> authors;
+  private final Map<String, BookCopy> copies = new HashMap<>();
 
-  private final BookCategory bookCategory;
-  @Getter(AccessLevel.NONE)
-  private final Set<BookCopy> copies = new HashSet<>();
-
-  public record BorrowDataDto(String bookCopyIdentifier, OffsetDateTime borrowDate, String clientIdfentifier) {
-  }
-
-  public Book(String title, String isbn, List<String> authors, BookCategory bookCategory) {
+  Book(String title, String isbn, List<String> authors, BookCategory bookCategory) {
     validateTitle(title);
     validateAuthors(authors);
     validateIsbn(isbn);
@@ -35,26 +31,27 @@ public final class Book {
     this.bookCategory = bookCategory;
   }
 
-  public void addBookCopy(String bookCopyIdentifier) {
-    validateBookCopyIdentifier(bookCopyIdentifier);
-    copies.add(new BookCopy(bookCopyIdentifier));
+  public static Book fromSnapshot(BookSnapshot snapshot) {
+    return new Book(snapshot.title(), snapshot.isbn(), snapshot.authors(), snapshot.bookCategory());
   }
 
-  public void borrowBookCopy(BorrowDataDto borrowDataDto) {
-    copies.stream()
-      .filter(bookCopy -> bookCopy.getId().equals(borrowDataDto.bookCopyIdentifier))
-      .findFirst()
-      .orElseThrow(() -> new IllegalArgumentException("Book copy not found"))
-      .borrowBook(borrowDataDto.borrowDate, borrowDataDto.clientIdfentifier);
+  public BookSnapshot toSnapshot() {
+    return new BookSnapshot(isbn, title, authors, bookCategory, copies.entrySet()
+      .stream()
+      .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, entry -> entry.getValue().toSnapshot())));
+  }
+
+  public void addBookCopy(String bookCopyIdentifier) {
+    validateBookCopyIdentifier(bookCopyIdentifier);
+    copies.put(bookCopyIdentifier, new BookCopy(false, null, null));
+  }
+
+  public void borrowBookCopy(String bookCopyIdentifier, OffsetDateTime borrowDate) {
+    copies.get(bookCopyIdentifier).borrowBook(borrowDate);
   }
 
   public boolean hasAvailableCopy() {
-    return copies.stream().anyMatch(bookCopy -> !bookCopy.isBorrowed());
-  }
-
-  @Override
-  public String toString() {
-    return "Book{" + "title='" + title + '\'' + ", authors=" + authors + ", isbn='" + isbn + '\'' + '}';
+    return copies.entrySet().stream().map(Map.Entry::getValue).anyMatch(bookCopy -> !bookCopy.isBorrowed());
   }
 
   private void validateIsbn(String isbn) {
@@ -87,3 +84,4 @@ public final class Book {
     }
   }
 }
+

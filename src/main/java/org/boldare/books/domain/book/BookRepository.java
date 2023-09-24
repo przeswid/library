@@ -11,6 +11,4 @@ public interface BookRepository {
   Optional<Book> getByTitle(String title);
 
   Collection<Book> getAll();
-
-  void removeAll();
 }
