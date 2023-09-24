@@ -1,19 +1,16 @@
-package org.boldare.books.infrastructure;
+package org.boldare.books.infrastructure.db;
 
 import org.boldare.books.domain.book.Book;
 import org.boldare.books.domain.book.BookCopySnapshot;
 import org.boldare.books.domain.book.BookRepository;
 import org.boldare.books.domain.book.BookSnapshot;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.function.Predicate;
 
-public final class BookRepositoryInMemory implements BookRepository {
-
-  public static final BookRepository INSTANCE = new BookRepositoryInMemory();
-
-  private BookRepositoryInMemory() {
-  }
+@Repository
+final class BookRepositoryInMemory implements BookRepository {
 
   private final Set<BookSnapshot> books = new HashSet<>();
 

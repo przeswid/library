@@ -17,8 +17,8 @@ public final class Book {
   private final String isbn;
   private String title;
   private BookCategory bookCategory;
-  private final List<String> authors;
-  private final Map<String, BookCopy> copies = new HashMap<>();
+  private List<String> authors;
+  private Map<String, BookCopy> copies = new HashMap<>();
 
   Book(String title, String isbn, List<String> authors, BookCategory bookCategory) {
     validateTitle(title);
@@ -31,8 +31,17 @@ public final class Book {
     this.bookCategory = bookCategory;
   }
 
+  Book(String title, String isbn, List<String> authors, BookCategory bookCategory, Map<String, BookCopy> copies) {
+    this(title, isbn, authors, bookCategory);
+
+    this.copies = copies;
+  }
+
   public static Book fromSnapshot(BookSnapshot snapshot) {
-    return new Book(snapshot.title(), snapshot.isbn(), snapshot.authors(), snapshot.bookCategory());
+    return new Book(snapshot.title(), snapshot.isbn(), snapshot.authors(), snapshot.bookCategory(), snapshot.copies()
+      .entrySet()
+      .stream()
+      .collect(Collectors.toMap(Map.Entry::getKey, entry -> BookCopy.fromSnapshot(entry.getValue()))));
   }
 
   public BookSnapshot toSnapshot() {

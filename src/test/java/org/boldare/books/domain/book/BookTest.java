@@ -1,7 +1,6 @@
 package org.boldare.books.domain.book;
 
 import org.assertj.core.api.Assertions;
-import org.boldare.books.infrastructure.BookRepositoryInMemory;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +18,6 @@ class BookTest {
       String bookCopyId = "1";
       Book book = new Book(title, "1234567890", List.of("John Doe"), BookCategory.NOVEL);
       book.addBookCopy(bookCopyId);
-      BookRepositoryInMemory.INSTANCE.add(book);
 
       // when
       book.borrowBookCopy(bookCopyId, OffsetDateTime.now());
