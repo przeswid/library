@@ -16,48 +16,48 @@ import java.time.OffsetDateTime;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 final class BookCopy {
 
-  private static final int MAX_RENT_DAYS = 30;
+  private static final int MAX_BORROW_DAYS = 30;
 
   @EqualsAndHashCode.Include
   private final String id;
 
-  private boolean isRent;
+  private boolean isBorrowed;
 
-  private OffsetDateTime rentDate;
+  private OffsetDateTime borrowDate;
 
   private OffsetDateTime returnDate;
 
   private Location location;
 
-  void rentIt(OffsetDateTime rentDate, String clientIdentifier) {
-    validateIfBookIsNotAlreadyRent();
-    this.isRent = true;
-    this.rentDate = rentDate;
-    this.returnDate = this.rentDate.plusDays(MAX_RENT_DAYS);
+  void borrowBook(OffsetDateTime borrowDate, String clientIdentifier) {
+    validateIfBookIsNotAlreadyBorrowed();
+    this.isBorrowed = true;
+    this.borrowDate = borrowDate;
+    this.returnDate = this.borrowDate.plusDays(MAX_BORROW_DAYS);
     this.location = new Renter(clientIdentifier);
   }
 
-  void returnIt() {
-    validateIfBookIsRent();
-    this.isRent = false;
-    this.rentDate = null;
+  void returnBook() {
+    validateIfBookIsBorrowed();
+    this.isBorrowed = false;
+    this.borrowDate = null;
     this.returnDate = null;
     this.location = new Desk();
   }
 
-  private void validateIfBookIsRent() {
-    if (!isRent) {
-      throw new IllegalStateException("Book copy is not rent");
+  private void validateIfBookIsBorrowed() {
+    if (!isBorrowed) {
+      throw new IllegalStateException("Book copy is not borrowed");
     }
   }
 
-  boolean isRent() {
-    return isRent;
+  boolean isBorrowed() {
+    return isBorrowed;
   }
 
-  private void validateIfBookIsNotAlreadyRent() {
-    if (isRent) {
-      throw new IllegalStateException("Book copy is already rent");
+  private void validateIfBookIsNotAlreadyBorrowed() {
+    if (isBorrowed) {
+      throw new IllegalStateException("Book copy is already borrowed");
     }
   }
 

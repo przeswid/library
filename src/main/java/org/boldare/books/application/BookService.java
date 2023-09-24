@@ -19,12 +19,12 @@ public class BookService {
     return bookRepository.searchByTitle(title);
   }
 
-  public void rentBookCopy(String title, String bookCopyId, String clientIdentifier) {
+  public void borrowBookCopy(String title, String bookCopyId, String clientIdentifier) {
     Book book = bookRepository.getByTitle(title).orElseThrow(() -> new IllegalStateException("Book not found"));
 
-    Book.RentDataDto rentData = new Book.RentDataDto(bookCopyId, realDateTimeProvider.getCurrentDateTime(),
+    Book.BorrowDataDto borrowDataDto = new Book.BorrowDataDto(bookCopyId, realDateTimeProvider.getCurrentDateTime(),
       clientIdentifier);
-    book.rentBookCopy(rentData);
+    book.borrowBookCopy(borrowDataDto);
   }
 
   public Collection<Book> findAllBooks() {

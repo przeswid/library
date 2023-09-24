@@ -16,13 +16,15 @@ public final class Book {
   private final String isbn;
   private final String title;
   private final List<String> authors;
+
+  private final BookCategory bookCategory;
   @Getter(AccessLevel.NONE)
   private final Set<BookCopy> copies = new HashSet<>();
 
-  public record RentDataDto(String bookCopyIdentifier, OffsetDateTime rentDate, String clientIdfentifier) {
+  public record BorrowDataDto(String bookCopyIdentifier, OffsetDateTime borrowDate, String clientIdfentifier) {
   }
 
-  public Book(String title, String isbn, List<String> authors) {
+  public Book(String title, String isbn, List<String> authors, BookCategory bookCategory) {
     validateTitle(title);
     validateAuthors(authors);
     validateIsbn(isbn);
@@ -30,6 +32,7 @@ public final class Book {
     this.isbn = isbn;
     this.authors = authors;
     this.title = title;
+    this.bookCategory = bookCategory;
   }
 
   public void addBookCopy(String bookCopyIdentifier) {
@@ -37,16 +40,16 @@ public final class Book {
     copies.add(new BookCopy(bookCopyIdentifier));
   }
 
-  public void rentBookCopy(RentDataDto rentData) {
+  public void borrowBookCopy(BorrowDataDto borrowDataDto) {
     copies.stream()
-      .filter(bookCopy -> bookCopy.getId().equals(rentData.bookCopyIdentifier))
+      .filter(bookCopy -> bookCopy.getId().equals(borrowDataDto.bookCopyIdentifier))
       .findFirst()
       .orElseThrow(() -> new IllegalArgumentException("Book copy not found"))
-      .rentIt(rentData.rentDate, rentData.clientIdfentifier);
+      .borrowBook(borrowDataDto.borrowDate, borrowDataDto.clientIdfentifier);
   }
 
   public boolean hasAvailableCopy() {
-    return copies.stream().anyMatch(bookCopy -> !bookCopy.isRent());
+    return copies.stream().anyMatch(bookCopy -> !bookCopy.isBorrowed());
   }
 
   @Override
