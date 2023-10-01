@@ -2,6 +2,8 @@ package org.boldare.books.domain.book;
 
 import lombok.AllArgsConstructor;
 import lombok.ToString;
+import org.boldare.books.domain.book.location.BookLocation;
+import org.boldare.books.domain.book.location.Desk;
 
 import java.time.OffsetDateTime;
 
@@ -16,12 +18,15 @@ final class BookCopy {
 
   private OffsetDateTime returnDate;
 
+  private BookLocation location;
+
   static BookCopy fromSnapshot(BookCopySnapshot bookCopySnapshot) {
-    return new BookCopy(bookCopySnapshot.isBorrowed(), bookCopySnapshot.borrowDate(), bookCopySnapshot.returnDate());
+    return new BookCopy(bookCopySnapshot.isBorrowed(),
+      bookCopySnapshot.borrowDate(), bookCopySnapshot.returnDate(), bookCopySnapshot.location());
   }
 
   BookCopySnapshot toSnapshot() {
-    return new BookCopySnapshot(isBorrowed, borrowDate, returnDate);
+    return new BookCopySnapshot(isBorrowed, borrowDate, returnDate, location);
   }
 
   void borrowBook(OffsetDateTime borrowDate) {
@@ -29,6 +34,7 @@ final class BookCopy {
     this.isBorrowed = true;
     this.borrowDate = borrowDate;
     this.returnDate = this.borrowDate.plusDays(MAX_BORROW_DAYS);
+    this.location = null;
   }
 
   void returnBook() {
@@ -36,6 +42,7 @@ final class BookCopy {
     this.isBorrowed = false;
     this.borrowDate = null;
     this.returnDate = null;
+    this.location = new Desk();
   }
 
   private void validateIfBookIsBorrowed() {

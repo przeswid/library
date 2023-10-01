@@ -1,6 +1,7 @@
 package org.boldare.books.domain.book;
 
 import lombok.Builder;
+import org.boldare.books.domain.book.location.BookLocation;
 
 import java.time.OffsetDateTime;
 
@@ -8,6 +9,8 @@ import java.time.OffsetDateTime;
 public record BookCopySnapshot(
   boolean isBorrowed,
   OffsetDateTime borrowDate,
-  OffsetDateTime returnDate
+  OffsetDateTime returnDate,
+
+  BookLocation location
 ) {
 }
