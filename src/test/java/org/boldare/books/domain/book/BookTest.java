@@ -16,7 +16,7 @@ class BookTest {
       // given
       String title = "My test book";
       String bookCopyId = "1";
-      Book book = new Book(title, "1234567890", List.of("John Doe"), BookCategory.NOVEL);
+      Book book = new Book(title, "1234567890", List.of("John Doe"), BookCategory.NOVEL, availableCopies);
       book.addBookCopy(bookCopyId);
 
       // when
@@ -31,7 +31,7 @@ class BookTest {
       String title = "My test book";
       String firstBookCopyId = "1";
       String secondBookCopyId = "2";
-      Book book = new Book(title, "1234567890", List.of("John Doe"), BookCategory.NOVEL);
+      Book book = new Book(title, "1234567890", List.of("John Doe"), BookCategory.NOVEL, availableCopies);
       book.addBookCopy(firstBookCopyId);
       book.addBookCopy(secondBookCopyId);
       // when
@@ -50,7 +50,7 @@ class BookTest {
       // given
       String title = "My test book";
       String bookCopyId = "1";
-      Book book = new Book(title, "1234567890", List.of("John Doe"), BookCategory.NOVEL);
+      Book book = new Book(title, "1234567890", List.of("John Doe"), BookCategory.NOVEL, availableCopies);
       book.addBookCopy(bookCopyId);
       // when
       BookSnapshot bookSnapshot = book.toSnapshot();

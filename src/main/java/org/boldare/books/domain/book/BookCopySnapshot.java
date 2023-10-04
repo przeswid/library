@@ -7,10 +7,12 @@ import java.time.OffsetDateTime;
 
 @Builder
 public record BookCopySnapshot(
+  String bookIsdn,
+
+//  String bookCopyId,
   boolean isBorrowed,
   OffsetDateTime borrowDate,
   OffsetDateTime returnDate,
-
   BookLocation location
 ) {
 }

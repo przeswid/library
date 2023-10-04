@@ -10,5 +10,7 @@ public interface BookRepository {
 
   Optional<Book> getByTitle(String title);
 
+  Optional<Book> getByIsbn(String isbn);
+
   Collection<Book> getAll();
 }

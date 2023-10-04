@@ -35,6 +35,11 @@ final class BookRepositoryInMemory implements BookRepository {
     return books.stream().filter(b -> b.title().equals(title)).findFirst().map(Book::fromSnapshot);
   }
 
+  @Override
+  public Optional<Book> getByIsbn(String isbn) {
+    return books.stream().filter(b -> b.isbn().equals(isbn)).findFirst().map(Book::fromSnapshot);
+  }
+
   public Collection<Book> getAll() {
     return books.stream().map(Book::fromSnapshot).toList();
   }
