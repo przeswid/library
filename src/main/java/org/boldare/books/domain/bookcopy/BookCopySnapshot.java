@@ -1,15 +1,16 @@
-package org.boldare.books.domain.book;
+package org.boldare.books.domain.bookcopy;
 
 import lombok.Builder;
-import org.boldare.books.domain.book.location.BookLocation;
+import org.boldare.books.domain.book.BookIsbn;
+import org.boldare.books.domain.bookcopy.location.BookLocation;
 
 import java.time.OffsetDateTime;
 
 @Builder
 public record BookCopySnapshot(
-  String bookIsdn,
+  BookIsbn bookIsdn,
 
-//  String bookCopyId,
+  BookCopyId bookCopyId,
   boolean isBorrowed,
   OffsetDateTime borrowDate,
   OffsetDateTime returnDate,

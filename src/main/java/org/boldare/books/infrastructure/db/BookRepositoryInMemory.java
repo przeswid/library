@@ -1,16 +1,24 @@
 package org.boldare.books.infrastructure.db;
 
+import lombok.AllArgsConstructor;
 import org.boldare.books.domain.book.Book;
-import org.boldare.books.domain.book.BookCopySnapshot;
+import org.boldare.books.domain.book.BookIsbn;
 import org.boldare.books.domain.book.BookRepository;
 import org.boldare.books.domain.book.BookSnapshot;
+import org.boldare.books.domain.bookcopy.BookCopy;
+import org.boldare.books.domain.bookcopy.BookCopyRepository;
+import org.boldare.books.domain.bookcopy.BookCopySnapshot;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.function.Predicate;
+
+import static java.util.function.Predicate.not;
 
 @Repository
+@AllArgsConstructor
 final class BookRepositoryInMemory implements BookRepository {
+
+  private final BookCopyRepository bookCopyRepository;
 
   private final Set<BookSnapshot> books = new HashSet<>();
 
@@ -22,11 +30,10 @@ final class BookRepositoryInMemory implements BookRepository {
     String titleLower = title.toLowerCase();
     return books.stream()
       .filter(b -> hasTitle(b, titleLower))
-      .filter(b -> b.copies()
-        .entrySet()
+      .filter(b -> bookCopyRepository.getByBookIsbn(b.isbn())
         .stream()
-        .map(Map.Entry::getValue)
-        .anyMatch(Predicate.not(BookCopySnapshot::isBorrowed)))
+        .map(BookCopy::toSnapshot)
+        .anyMatch(not(BookCopySnapshot::isBorrowed)))
       .map(Book::fromSnapshot)
       .toList();
   }
@@ -36,7 +43,7 @@ final class BookRepositoryInMemory implements BookRepository {
   }
 
   @Override
-  public Optional<Book> getByIsbn(String isbn) {
+  public Optional<Book> getByIsbn(BookIsbn isbn) {
     return books.stream().filter(b -> b.isbn().equals(isbn)).findFirst().map(Book::fromSnapshot);
   }
 

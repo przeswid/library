@@ -1,28 +1,28 @@
 package org.boldare.books.infrastructure.rest;
 
 import lombok.AllArgsConstructor;
-import org.boldare.books.application.BookService;
-import org.boldare.books.domain.book.Book;
+import org.boldare.books.application.book.queries.FindBookByTtitleQuery;
+import org.boldare.books.application.core.cqs.query.QueryDispatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/book")
 @AllArgsConstructor
 class BookController {
 
-  private final BookService bookService;
+  private final QueryDispatcher queryDispatcher;
 
   private final BookDtoMapper bookDtoMapper;
 
   @GetMapping(value = "/", produces = "application/json")
-  ResponseEntity<List<BookDto>> getAllBooks() {
-    return ResponseEntity.ok(
-      bookService.findAllBooks().stream().map(Book::toSnapshot).map(bookDtoMapper::mapBookSnapshotToBookDto).toList());
+  ResponseEntity<BookDto> getBookByTitle(@RequestParam String title) {
+
+    FindBookByTtitleQuery query = new FindBookByTtitleQuery(title);
+    return ResponseEntity.ok(bookDtoMapper.mapBookResultToBookDto(queryDispatcher.dispatch(query)));
   }
 
 }

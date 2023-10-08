@@ -1,12 +1,11 @@
-package org.boldare.books.domain.book;
+package org.boldare.books.domain.bookcopy;
 
 import lombok.AllArgsConstructor;
 import lombok.ToString;
-import org.boldare.books.domain.book.event.BookCopyBorrowed;
-import org.boldare.books.domain.book.event.BookCopyReturned;
-import org.boldare.books.domain.book.location.BookLocation;
-import org.boldare.books.domain.book.location.Desk;
-import org.boldare.books.domain.common.DomainEvent;
+import org.boldare.books.domain.book.BookIsbn;
+import org.boldare.books.domain.bookcopy.event.BookCopyBorrowed;
+import org.boldare.books.domain.bookcopy.location.BookLocation;
+import org.boldare.books.domain.core.DomainEvent;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -18,7 +17,9 @@ import java.util.List;
 public final class BookCopy {
   private static final int MAX_BORROW_DAYS = 30;
 
-  private final String bookIsdn;
+  private final BookIsbn bookIsbn;
+
+  private final BookCopyId bookCopyId;
 
   private boolean isBorrowed;
 
@@ -31,12 +32,12 @@ public final class BookCopy {
   private final List<DomainEvent> domainEvents = new ArrayList<>();
 
   public static BookCopy fromSnapshot(BookCopySnapshot bookCopySnapshot) {
-    return new BookCopy(bookCopySnapshot.bookIsdn(), bookCopySnapshot.isBorrowed(), bookCopySnapshot.borrowDate(),
+    return new BookCopy(bookCopySnapshot.bookIsdn(), bookCopySnapshot.bookCopyId(), bookCopySnapshot.isBorrowed(), bookCopySnapshot.borrowDate(),
       bookCopySnapshot.returnDate(), bookCopySnapshot.location());
   }
 
   public BookCopySnapshot toSnapshot() {
-    return new BookCopySnapshot(bookIsdn, isBorrowed, borrowDate, returnDate, location);
+    return new BookCopySnapshot(bookIsbn, bookCopyId, isBorrowed, borrowDate, returnDate, location);
   }
 
   public void borrowBookCopy(OffsetDateTime borrowDate) {
@@ -46,27 +47,11 @@ public final class BookCopy {
     this.returnDate = this.borrowDate.plusDays(MAX_BORROW_DAYS);
     this.location = null;
 
-    domainEvents.add(new BookCopyBorrowed(bookIsdn, bookIsdn));
-  }
-
-  public void returnBookCopy() {
-    validateIfBookIsBorrowed();
-    this.isBorrowed = false;
-    this.borrowDate = null;
-    this.returnDate = null;
-    this.location = new Desk();
-
-    domainEvents.add(new BookCopyReturned(bookIsdn, bookIsdn));
+    domainEvents.add(new BookCopyBorrowed(bookIsbn, bookCopyId));
   }
 
   public List<DomainEvent> domainEvents() {
     return Collections.unmodifiableList(domainEvents);
-  }
-
-  private void validateIfBookIsBorrowed() {
-    if (!isBorrowed) {
-      throw new IllegalStateException("Book copy is not borrowed");
-    }
   }
 
   boolean isBorrowed() {

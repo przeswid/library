@@ -1,12 +1,12 @@
-package org.boldare.books.domain.book.event;
+package org.boldare.books.domain.bookcopy.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
-import org.boldare.books.domain.common.DomainEvent;
+import org.boldare.books.domain.core.DomainEvent;
 
 @AllArgsConstructor
 @Value
-public class BookCopyBorrowed extends DomainEvent {
+public class BookCopyReturned extends DomainEvent {
   private final String bookIsdn;
   private final String bookCopyId;
 }

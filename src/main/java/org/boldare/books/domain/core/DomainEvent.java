@@ -1,4 +1,4 @@
-package org.boldare.books.domain.common;
+package org.boldare.books.domain.core;
 
 import lombok.Getter;
 

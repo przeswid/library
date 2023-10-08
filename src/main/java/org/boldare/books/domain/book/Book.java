@@ -10,13 +10,13 @@ import java.util.List;
 public final class Book {
 
   @EqualsAndHashCode.Include
-  private final String isbn;
+  private final BookIsbn isbn;
   private String title;
   private BookCategory bookCategory;
   private List<String> authors;
   private int availableCopies;
 
-  Book(String title, String isbn, List<String> authors, BookCategory bookCategory, int availableCopies) {
+  Book(String title, BookIsbn isbn, List<String> authors, BookCategory bookCategory, int availableCopies) {
     this.availableCopies = availableCopies;
     validateTitle(title);
     validateAuthors(authors);
@@ -48,8 +48,8 @@ public final class Book {
     availableCopies--;
   }
 
-  private void validateIsbn(String isbn) {
-    if (isbn == null || isbn.isBlank()) {
+  private void validateIsbn(BookIsbn bookIsbn) {
+    if (bookIsbn == null || bookIsbn.isbn().isBlank()) {
       throw new IllegalArgumentException("ISBN cannot be blank");
     }
   }
@@ -69,12 +69,6 @@ public final class Book {
           throw new IllegalArgumentException("Author cannot be blank");
         }
       });
-    }
-  }
-
-  private void validateBookCopyIdentifier(String bookCopyIdentifier) {
-    if (bookCopyIdentifier == null || bookCopyIdentifier.isBlank()) {
-      throw new IllegalArgumentException("Book copy identifier cannot be blank");
     }
   }
 }

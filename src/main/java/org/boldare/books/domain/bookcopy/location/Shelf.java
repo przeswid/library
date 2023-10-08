@@ -1,4 +1,4 @@
-package org.boldare.books.domain.book.location;
+package org.boldare.books.domain.bookcopy.location;
 
 public class Shelf extends BookLocation {
   private final String shelfNumber;

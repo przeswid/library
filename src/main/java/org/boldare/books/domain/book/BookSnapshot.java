@@ -6,7 +6,7 @@ import java.util.List;
 
 @Builder
 public record BookSnapshot(
-  String isbn,
+  BookIsbn isbn,
   String title,
   List<String> authors,
   BookCategory bookCategory,

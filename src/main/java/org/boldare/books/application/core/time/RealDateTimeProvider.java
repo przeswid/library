@@ -1,4 +1,4 @@
-package org.boldare.books.application.time;
+package org.boldare.books.application.core.time;
 
 import org.springframework.stereotype.Component;
 

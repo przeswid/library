@@ -1,43 +1,39 @@
-package org.boldare.books.application;
+package org.boldare.books;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
-import org.boldare.books.domain.book.Book;
+import org.boldare.books.application.book.commands.AddBookCommand;
+import org.boldare.books.application.bookcopy.commands.AddBookCopyCommand;
+import org.boldare.books.application.core.cqs.command.CommandDispatcher;
 import org.boldare.books.domain.book.BookCategory;
-import org.boldare.books.domain.book.BookRepository;
+import org.boldare.books.domain.book.BookIsbn;
 import org.boldare.books.domain.book.BookSnapshot;
-import org.springframework.stereotype.Service;
+import org.boldare.books.domain.bookcopy.BookCopyId;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
+@Component
 @AllArgsConstructor
-@Service
-public class BookService {
+public class InitDatabase implements ApplicationListener<ContextRefreshedEvent> {
 
-  private final BookRepository bookRepository;
+  private final CommandDispatcher commandDispatcher;
 
-  public Collection<Book> findBookByTitle(String title) {
-    return bookRepository.searchByTitle(title);
-  }
-
-  public Collection<Book> findAllBooks() {
-    return bookRepository.getAll();
-  }
-
-  public void increaseAvailableCopies(String isbn) {
-    Book book = bookRepository.getByIsbn(isbn).orElseThrow(() -> new RuntimeException("Book not found"));
-    book.increaseAvailableCopies();
-  }
-
-  public void decreaseAvailableCopies(String isbn) {
-    Book book = bookRepository.getByIsbn(isbn).orElseThrow(() -> new RuntimeException("Book not found"));
-    book.decreaseAvailableCopies();
+  @Override
+  public void onApplicationEvent(ContextRefreshedEvent event) {
+    initDatabase();
   }
 
   @PostConstruct
   private void initDatabase() {
-    addBook("The Lord of the Rings", "978-0261103252", List.of("J.R.R. Tolkien"), BookCategory.NOVEL);
+    String isbn = "978-0261103252";
+    addBook("The Lord of the Rings", isbn, List.of("J.R.R. Tolkien"), BookCategory.NOVEL);
+    addBookCopy(isbn);
+    addBookCopy(isbn);
+
     addBook("Le Petit Prince", "978-2070612758", List.of("Antoine de Saint-Exupéry"), BookCategory.NOVEL);
     addBook("Harry Potter and the Philosopher's Stone", "978-0747532743", List.of("J.K. Rowling"), BookCategory.NOVEL);
     addBook("And Then There Were None", "978-0312330873", List.of("Agatha Christie"), BookCategory.NOVEL);
@@ -52,12 +48,16 @@ public class BookService {
   private void addBook(String title, String isbn, List<String> authors, BookCategory category) {
     BookSnapshot bookSnapshot = BookSnapshot.builder()
       .title(title)
-      .isbn(isbn)
+      .isbn(new BookIsbn(isbn))
       .authors(authors)
       .bookCategory(category)
       .build();
-    Book book = Book.fromSnapshot(bookSnapshot);
-    bookRepository.add(book);
+    commandDispatcher.dispatch(new AddBookCommand(bookSnapshot));
   }
 
+  private void addBookCopy(String bookIsbn) {
+    commandDispatcher.dispatch(
+      new AddBookCopyCommand(new BookIsbn(bookIsbn), new BookCopyId(UUID.randomUUID().toString())));
+  }
 }
+
