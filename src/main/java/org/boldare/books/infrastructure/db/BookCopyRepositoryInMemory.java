@@ -32,6 +32,6 @@ final class BookCopyRepositoryInMemory implements BookCopyRepository {
 
   @Override
   public List<BookCopy> getByBookIsbn(BookIsbn bookIsbn) {
-    return bookCopySnapshots.stream().filter(b -> b.bookIsdn().equals(bookIsbn)).map(BookCopy::fromSnapshot).toList();
+    return bookCopySnapshots.stream().filter(b -> b.bookIsbn().equals(bookIsbn)).map(BookCopy::fromSnapshot).toList();
   }
 }

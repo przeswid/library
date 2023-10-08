@@ -32,7 +32,7 @@ public final class BookCopy {
   private final List<DomainEvent> domainEvents = new ArrayList<>();
 
   public static BookCopy fromSnapshot(BookCopySnapshot bookCopySnapshot) {
-    return new BookCopy(bookCopySnapshot.bookIsdn(), bookCopySnapshot.bookCopyId(), bookCopySnapshot.isBorrowed(), bookCopySnapshot.borrowDate(),
+    return new BookCopy(bookCopySnapshot.bookIsbn(), bookCopySnapshot.bookCopyId(), bookCopySnapshot.isBorrowed(), bookCopySnapshot.borrowDate(),
       bookCopySnapshot.returnDate(), bookCopySnapshot.location());
   }
 

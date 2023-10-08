@@ -8,12 +8,14 @@ import java.time.OffsetDateTime;
 
 @Builder
 public record BookCopySnapshot(
-  BookIsbn bookIsdn,
-
+  BookIsbn bookIsbn,
   BookCopyId bookCopyId,
   boolean isBorrowed,
   OffsetDateTime borrowDate,
   OffsetDateTime returnDate,
   BookLocation location
 ) {
+  public BookCopySnapshot(BookIsbn bookIsbn, BookCopyId bookCopyId) {
+    this(bookIsbn, bookCopyId, false, null, null, null);
+  }
 }
