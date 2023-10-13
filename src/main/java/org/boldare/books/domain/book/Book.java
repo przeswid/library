@@ -16,6 +16,7 @@ public final class Book {
   private List<String> authors;
   private int availableCopies;
 
+  // Forum comment
   Book(String title, BookIsbn isbn, List<String> authors, BookCategory bookCategory, int availableCopies) {
     this.availableCopies = availableCopies;
     validateTitle(title);

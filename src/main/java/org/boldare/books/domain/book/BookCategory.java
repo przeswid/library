@@ -1,5 +1,5 @@
 package org.boldare.books.domain.book;
-
+// forum comment
 public enum BookCategory {
   NOVEL, COMICS, FANTASY, SCIENCE_FICTION, BIOGRAPHY, HISTORY, CRIME, THRILLER, HORROR, ROMANCE,
   ADVENTURE, CHILDREN, YOUNG_ADULT, POETRY, DRAMA, RELIGION, ART, COOKBOOK, SCIENCE,
