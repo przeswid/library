@@ -1,4 +1,4 @@
-package org.boldare.books.infrastructure.rest;
+package org.boldare.books.presentation.rest;
 
 import java.time.OffsetDateTime;
 

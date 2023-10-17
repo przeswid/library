@@ -1,4 +1,4 @@
-package org.boldare.books.infrastructure.rest;
+package org.boldare.books.presentation.rest;
 
 import org.boldare.books.application.book.queries.FindBookByTtitleQueryResult;
 import org.mapstruct.Mapper;

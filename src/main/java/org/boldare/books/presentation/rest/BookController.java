@@ -1,4 +1,4 @@
-package org.boldare.books.infrastructure.rest;
+package org.boldare.books.presentation.rest;
 
 import lombok.AllArgsConstructor;
 import org.boldare.books.application.book.queries.FindBookByTtitleQuery;
