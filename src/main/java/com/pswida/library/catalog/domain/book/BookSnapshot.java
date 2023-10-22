@@ -10,7 +10,6 @@ public record BookSnapshot(
   String title,
   List<String> authors,
   BookCategory bookCategory,
-
-  int availableCopies
+  BookDiscussion discussion
 ) {
 }

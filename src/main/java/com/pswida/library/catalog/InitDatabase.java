@@ -1,14 +1,14 @@
 package com.pswida.library.catalog;
 
+import com.pswida.library.catalog.application.book.commands.AddBookCommand;
+import com.pswida.library.catalog.application.bookcopy.commands.AddBookCopyCommand;
+import com.pswida.library.catalog.application.core.cqs.command.CommandDispatcher;
 import com.pswida.library.catalog.domain.book.BookCategory;
 import com.pswida.library.catalog.domain.book.BookIsbn;
 import com.pswida.library.catalog.domain.book.BookSnapshot;
 import com.pswida.library.catalog.domain.bookcopy.BookCopyId;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
-import com.pswida.library.catalog.application.book.commands.AddBookCommand;
-import com.pswida.library.catalog.application.bookcopy.commands.AddBookCopyCommand;
-import com.pswida.library.catalog.application.core.cqs.command.CommandDispatcher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;

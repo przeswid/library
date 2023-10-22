@@ -1,8 +1,14 @@
 package com.pswida.library.catalog.domain.book;
 
+import com.pswida.library.catalog.domain.book.event.BookCreated;
+import com.pswida.library.common.domain.DomainEvent;
+import com.pswida.library.common.domain.tracker.ProcessTrackerId;
+import com.pswida.library.discussion.domain.DiscussionId;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -11,13 +17,14 @@ public final class Book {
 
   @EqualsAndHashCode.Include
   private final BookIsbn isbn;
+  @Getter
+  private final List<DomainEvent> domainEvents;
   private String title;
   private BookCategory bookCategory;
   private List<String> authors;
-  private int availableCopies;
+  private BookDiscussion discussion;
 
-  Book(String title, BookIsbn isbn, List<String> authors, BookCategory bookCategory, int availableCopies) {
-    this.availableCopies = availableCopies;
+  Book(String title, BookIsbn isbn, List<String> authors, BookCategory bookCategory, BookDiscussion discussion) {
     validateTitle(title);
     validateAuthors(authors);
     validateIsbn(isbn);
@@ -26,26 +33,43 @@ public final class Book {
     this.authors = authors;
     this.title = title;
     this.bookCategory = bookCategory;
+    this.domainEvents = new ArrayList<>();
+    this.discussion = discussion;
   }
 
   public static Book fromSnapshot(BookSnapshot snapshot) {
-    return new Book(snapshot.title(), snapshot.isbn(), snapshot.authors(), snapshot.bookCategory(),snapshot.availableCopies());
+    return new Book(snapshot.title(), snapshot.isbn(), snapshot.authors(), snapshot.bookCategory(),
+      snapshot.discussion());
+  }
+
+  public static Book newBook(String title, BookIsbn isbn, List<String> authors, BookCategory bookCategory) {
+    Book book = new Book(title, isbn, authors, bookCategory, BookDiscussion.initializeDiscussion());
+    registerBookCreatedEvent(book);
+    return book;
   }
 
   public BookSnapshot toSnapshot() {
-    return new BookSnapshot(isbn, title, authors, bookCategory, availableCopies);
+    return new BookSnapshot(isbn, title, authors, bookCategory, discussion);
   }
 
-  public boolean hasAvailableCopy() {
-    return availableCopies > 0;
+  public void initiateDiscussion(DiscussionId discussionId) {
+    this.discussion = this.discussion.nowReady(discussionId);
   }
 
-  public void increaseAvailableCopies() {
-    availableCopies++;
+  public void startDiscussionProcess(ProcessTrackerId trackerId) {
+    this.discussion = this.discussion.nowRequested(trackerId);
   }
 
-  public void decreaseAvailableCopies() {
-    availableCopies--;
+  public void failDiscussionProcess() {
+    this.discussion = this.discussion.nowFailed();
+  }
+
+  public void retryDiscussionProcess() {
+    registerBookCreatedEvent(this);
+  }
+
+  private static void registerBookCreatedEvent(Book book) {
+    book.domainEvents.add(new BookCreated(book.isbn));
   }
 
   private void validateIsbn(BookIsbn bookIsbn) {

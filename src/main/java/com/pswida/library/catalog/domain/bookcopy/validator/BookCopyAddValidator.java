@@ -1,10 +1,10 @@
 package com.pswida.library.catalog.domain.bookcopy.validator;
 
-import com.pswida.library.catalog.domain.bookcopy.BookCopySnapshot;
-import lombok.AllArgsConstructor;
 import com.pswida.library.catalog.application.core.validator.BaseValidatorService;
 import com.pswida.library.catalog.application.core.validator.Validator;
 import com.pswida.library.catalog.domain.book.BookRepository;
+import com.pswida.library.catalog.domain.bookcopy.BookCopySnapshot;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

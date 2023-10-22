@@ -1,8 +1,8 @@
 package com.pswida.library.catalog.domain.bookcopy.event;
 
+import com.pswida.library.common.domain.DomainEvent;
 import lombok.AllArgsConstructor;
 import lombok.Value;
-import com.pswida.library.catalog.domain.core.DomainEvent;
 
 @AllArgsConstructor
 @Value

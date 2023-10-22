@@ -1,4 +1,4 @@
-package com.pswida.library.catalog.domain.core;
+package com.pswida.library.common.domain;
 
 import lombok.Getter;
 

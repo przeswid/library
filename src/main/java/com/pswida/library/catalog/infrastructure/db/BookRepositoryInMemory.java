@@ -1,13 +1,13 @@
 package com.pswida.library.catalog.infrastructure.db;
 
+import com.pswida.library.catalog.domain.book.Book;
 import com.pswida.library.catalog.domain.book.BookIsbn;
+import com.pswida.library.catalog.domain.book.BookRepository;
 import com.pswida.library.catalog.domain.book.BookSnapshot;
 import com.pswida.library.catalog.domain.bookcopy.BookCopy;
 import com.pswida.library.catalog.domain.bookcopy.BookCopyRepository;
-import com.pswida.library.catalog.domain.bookcopy.BookCopySnapshot;
+import com.pswida.library.common.domain.tracker.ProcessTrackerId;
 import lombok.AllArgsConstructor;
-import com.pswida.library.catalog.domain.book.Book;
-import com.pswida.library.catalog.domain.book.BookRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -22,7 +22,7 @@ final class BookRepositoryInMemory implements BookRepository {
 
   private final Set<BookSnapshot> books = new HashSet<>();
 
-  public void add(Book book) {
+  public void save(Book book) {
     books.add(book.toSnapshot());
   }
 
@@ -33,7 +33,7 @@ final class BookRepositoryInMemory implements BookRepository {
       .filter(b -> bookCopyRepository.getByBookIsbn(b.isbn())
         .stream()
         .map(BookCopy::toSnapshot)
-        .anyMatch(not(BookCopySnapshot::isBorrowed)))
+        .anyMatch(not(bc -> bc.status() == BookCopy.Status.AVAILABLE)))
       .map(Book::fromSnapshot)
       .toList();
   }
@@ -45,6 +45,11 @@ final class BookRepositoryInMemory implements BookRepository {
   @Override
   public Optional<Book> getByIsbn(BookIsbn isbn) {
     return books.stream().filter(b -> b.isbn().equals(isbn)).findFirst().map(Book::fromSnapshot);
+  }
+
+  @Override
+  public Optional<Book> getByTrackerId(ProcessTrackerId trackerId) {
+    return Optional.empty();
   }
 
   public Collection<Book> getAll() {
