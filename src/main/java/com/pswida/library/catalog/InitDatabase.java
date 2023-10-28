@@ -1,12 +1,6 @@
 package com.pswida.library.catalog;
 
-import com.pswida.library.catalog.application.book.commands.AddBookCommand;
-import com.pswida.library.catalog.application.bookcopy.commands.AddBookCopyCommand;
-import com.pswida.library.catalog.application.core.cqs.command.CommandDispatcher;
-import com.pswida.library.catalog.domain.book.BookCategory;
-import com.pswida.library.catalog.domain.book.BookIsbn;
-import com.pswida.library.catalog.domain.book.BookSnapshot;
-import com.pswida.library.catalog.domain.bookcopy.BookCopyId;
+import com.pswida.library.catalog.domain.book.*;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationListener;
@@ -14,13 +8,12 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @AllArgsConstructor
 public class InitDatabase implements ApplicationListener<ContextRefreshedEvent> {
 
-  private final CommandDispatcher commandDispatcher;
+  private final BookRepository bookRepository;
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -31,8 +24,6 @@ public class InitDatabase implements ApplicationListener<ContextRefreshedEvent> 
   private void initDatabase() {
     String isbn = "978-0261103252";
     addBook("The Lord of the Rings", isbn, List.of("J.R.R. Tolkien"), BookCategory.NOVEL);
-    addBookCopy(isbn);
-    addBookCopy(isbn);
 
     addBook("Le Petit Prince", "978-2070612758", List.of("Antoine de Saint-Exupéry"), BookCategory.NOVEL);
     addBook("Harry Potter and the Philosopher's Stone", "978-0747532743", List.of("J.K. Rowling"), BookCategory.NOVEL);
@@ -52,12 +43,12 @@ public class InitDatabase implements ApplicationListener<ContextRefreshedEvent> 
       .authors(authors)
       .bookCategory(category)
       .build();
-    commandDispatcher.dispatch(new AddBookCommand(bookSnapshot));
+    bookRepository.save(Book.fromSnapshot(bookSnapshot));
   }
 
   private void addBookCopy(String bookIsbn) {
-    commandDispatcher.dispatch(
-      new AddBookCopyCommand(new BookIsbn(bookIsbn), new BookCopyId(UUID.randomUUID().toString())));
+//    commandDispatcher.dispatch(
+//      new AddBookCopyCommand(new BookIsbn(bookIsbn), new BookCopyId(UUID.randomUUID().toString())));
   }
 }
 

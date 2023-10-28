@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-final class BookCopyRepositoryInMemory implements BookCopyRepository {
+class BookCopyRepositoryInMemory implements BookCopyRepository {
 
   private final Set<BookCopySnapshot> bookCopySnapshots = new HashSet<>();
 

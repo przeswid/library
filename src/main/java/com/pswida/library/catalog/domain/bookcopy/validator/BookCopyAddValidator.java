@@ -1,7 +1,7 @@
 package com.pswida.library.catalog.domain.bookcopy.validator;
 
-import com.pswida.library.catalog.application.core.validator.BaseValidatorService;
-import com.pswida.library.catalog.application.core.validator.Validator;
+import com.pswida.library.common.application.validator.BaseValidatorService;
+import com.pswida.library.common.application.validator.Validator;
 import com.pswida.library.catalog.domain.book.BookRepository;
 import com.pswida.library.catalog.domain.bookcopy.BookCopySnapshot;
 import lombok.AllArgsConstructor;

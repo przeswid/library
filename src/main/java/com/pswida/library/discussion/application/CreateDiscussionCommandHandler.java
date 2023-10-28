@@ -1,6 +1,6 @@
 package com.pswida.library.discussion.application;
 
-import com.pswida.library.catalog.application.core.cqs.command.CommandHandler;
+import com.pswida.library.common.application.cqs.command.CommandHandler;
 import com.pswida.library.discussion.domain.Discussion;
 import com.pswida.library.discussion.domain.DiscussionRepository;
 import lombok.AllArgsConstructor;

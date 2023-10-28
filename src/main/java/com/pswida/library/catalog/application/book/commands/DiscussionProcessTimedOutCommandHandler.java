@@ -1,11 +1,13 @@
 package com.pswida.library.catalog.application.book.commands;
 
-import com.pswida.library.catalog.application.core.cqs.command.CommandHandler;
+import com.pswida.library.common.application.cqs.command.CommandHandler;
 import com.pswida.library.catalog.domain.book.Book;
 import com.pswida.library.catalog.domain.book.BookRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -17,12 +19,14 @@ class DiscussionProcessTimedOutCommandHandler extends CommandHandler<DiscussionP
 
   @Override
   protected void doHandle(DiscussionProcessTimedOutCommand command) {
-    Book book = bookRepository.getByTrackerId(command.trackerId()).orElseThrow();
+    Optional<Book> byTrackerId = bookRepository.getByTrackerId(command.trackerId());
+
+    Book book = byTrackerId.orElseThrow();
 
     if (command.retriedMaxTimes()) {
-      book.failDiscussionProcess();
+      book.failDiscussion();
     } else {
-      book.retryDiscussionProcess();
+      book.retryDiscussionRequest();
     }
 
     bookRepository.save(book);

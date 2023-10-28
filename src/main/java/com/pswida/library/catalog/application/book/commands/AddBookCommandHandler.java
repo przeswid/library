@@ -1,8 +1,6 @@
 package com.pswida.library.catalog.application.book.commands;
 
-import com.pswida.library.catalog.application.core.cqs.command.CommandHandler;
-import com.pswida.library.catalog.application.core.validator.ValidationException;
-import com.pswida.library.catalog.application.core.validator.ValidationResult;
+import com.pswida.library.common.application.cqs.command.CommandHandler;
 import com.pswida.library.catalog.domain.book.Book;
 import com.pswida.library.catalog.domain.book.BookRepository;
 import com.pswida.library.catalog.domain.book.BookSnapshot;
@@ -27,16 +25,16 @@ class AddBookCommandHandler extends CommandHandler<AddBookCommand> {
     BookSnapshot bookSnapshot = command.book();
     validateBook(bookSnapshot);
 
-    Book book = Book.newBook(bookSnapshot.title(), bookSnapshot.isbn(), bookSnapshot.authors(), bookSnapshot.bookCategory());
+    Book book = Book.bookWithRequestedDiscussion(bookSnapshot.getTitle(), bookSnapshot.getIsbn(), bookSnapshot.getAuthors(), bookSnapshot.getBookCategory());
     bookRepository.save(book);
     book.getDomainEvents().forEach(eventPublisher::publishEvent);
   }
 
   private void validateBook(BookSnapshot bookSnapshot) {
-    ValidationResult validate = validator.validate(bookSnapshot);
-    if (validate.status() == ValidationResult.Status.FAILURE) {
-      throw new ValidationException(validate.errors());
-    }
+//    ValidationResult validate = validator.validate(bookSnapshot);
+//    if (validate.status() == ValidationResult.Status.FAILURE) {
+//      throw new ValidationException(validate.errors());
+//    }
   }
 
   @Override

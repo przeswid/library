@@ -1,6 +1,6 @@
 package com.pswida.library.catalog.domain.book;
 
-import com.pswida.library.common.domain.tracker.ProcessTrackerId;
+import com.pswida.library.tracker.domain.ProcessTrackerId;
 
 import java.util.Collection;
 import java.util.Optional;

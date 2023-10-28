@@ -1,7 +1,7 @@
 package com.pswida.library.catalog.domain.book.validator;
 
-import com.pswida.library.catalog.application.core.validator.BaseValidatorService;
-import com.pswida.library.catalog.application.core.validator.Validator;
+import com.pswida.library.common.application.validator.BaseValidatorService;
+import com.pswida.library.common.application.validator.Validator;
 import com.pswida.library.catalog.domain.book.BookRepository;
 import com.pswida.library.catalog.domain.book.BookSnapshot;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ public class BookAddValidator extends BaseValidatorService<BookSnapshot> {
   private final Validator<BookSnapshot> validateIsbn = new Validator<>() {
     @Override
     public Predicate<BookSnapshot> predicate() {
-      return book -> bookRepository.getByIsbn(book.isbn()).isEmpty();
+      return book -> bookRepository.getByIsbn(book.getIsbn()).isEmpty();
     }
 
     @Override

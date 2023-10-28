@@ -1,7 +1,7 @@
 package com.pswida.library.catalog.application.book.commands;
 
-import com.pswida.library.catalog.application.core.cqs.command.Command;
-import com.pswida.library.common.domain.tracker.ProcessTrackerId;
+import com.pswida.library.common.application.cqs.command.Command;
+import com.pswida.library.tracker.domain.ProcessTrackerId;
 
 public record DiscussionProcessTimedOutCommand(ProcessTrackerId trackerId, boolean retriedMaxTimes) implements Command {
 }

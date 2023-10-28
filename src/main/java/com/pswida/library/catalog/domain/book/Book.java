@@ -2,7 +2,7 @@ package com.pswida.library.catalog.domain.book;
 
 import com.pswida.library.catalog.domain.book.event.BookCreated;
 import com.pswida.library.common.domain.DomainEvent;
-import com.pswida.library.common.domain.tracker.ProcessTrackerId;
+import com.pswida.library.tracker.domain.ProcessTrackerId;
 import com.pswida.library.discussion.domain.DiscussionId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,11 +38,11 @@ public final class Book {
   }
 
   public static Book fromSnapshot(BookSnapshot snapshot) {
-    return new Book(snapshot.title(), snapshot.isbn(), snapshot.authors(), snapshot.bookCategory(),
-      snapshot.discussion());
+    return new Book(snapshot.getTitle(), snapshot.getIsbn(), snapshot.getAuthors(), snapshot.getBookCategory(),
+      snapshot.getDiscussion());
   }
 
-  public static Book newBook(String title, BookIsbn isbn, List<String> authors, BookCategory bookCategory) {
+  public static Book bookWithRequestedDiscussion(String title, BookIsbn isbn, List<String> authors, BookCategory bookCategory) {
     Book book = new Book(title, isbn, authors, bookCategory, BookDiscussion.initializeDiscussion());
     registerBookCreatedEvent(book);
     return book;
@@ -52,19 +52,19 @@ public final class Book {
     return new BookSnapshot(isbn, title, authors, bookCategory, discussion);
   }
 
-  public void initiateDiscussion(DiscussionId discussionId) {
+  public void confirmDiscussion(DiscussionId discussionId) {
     this.discussion = this.discussion.nowReady(discussionId);
   }
 
-  public void startDiscussionProcess(ProcessTrackerId trackerId) {
-    this.discussion = this.discussion.nowRequested(trackerId);
+  public void trackDiscussion(ProcessTrackerId trackerId) {
+    this.discussion = this.discussion.nowTracked(trackerId);
   }
 
-  public void failDiscussionProcess() {
+  public void failDiscussion() {
     this.discussion = this.discussion.nowFailed();
   }
 
-  public void retryDiscussionProcess() {
+  public void retryDiscussionRequest() {
     registerBookCreatedEvent(this);
   }
 

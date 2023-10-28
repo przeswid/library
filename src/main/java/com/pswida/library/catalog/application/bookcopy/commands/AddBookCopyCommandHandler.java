@@ -1,8 +1,8 @@
 package com.pswida.library.catalog.application.bookcopy.commands;
 
-import com.pswida.library.catalog.application.core.cqs.command.CommandHandler;
-import com.pswida.library.catalog.application.core.validator.ValidationException;
-import com.pswida.library.catalog.application.core.validator.ValidationResult;
+import com.pswida.library.common.application.cqs.command.CommandHandler;
+import com.pswida.library.common.application.validator.ValidationException;
+import com.pswida.library.common.application.validator.ValidationResult;
 import com.pswida.library.catalog.domain.bookcopy.BookCopy;
 import com.pswida.library.catalog.domain.bookcopy.BookCopyRepository;
 import com.pswida.library.catalog.domain.bookcopy.BookCopySnapshot;

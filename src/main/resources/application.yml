@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: library
+  cloud:
+    function:
+      definition: discussionCreatedConsumer;discussionRequestedConsumer
+    stream:
+      default-binder: kafka
+      bindings:
+        discussionRequestedConsumer-in-0:
+          binder: kafka
+          destination: library-discussion-requested
+          content-type: application/json
+          group: discussion_v01
+          # Spring Cloud Stream Retry
+          consumer:
+            max-attempts: 2
+            back-off-initial-interval: 1000
+            default-retryable: true
+            back-off-multiplier: 1
+        discussionCreatedConsumer-in-0:
+          binder: kafka
+          destination: library-discussion-created
+          content-type: application/json
+          group: discussion_v01
+          # Spring Cloud Stream Retry
+          consumer:
+            max-attempts: 2
+            back-off-initial-interval: 1000
+            default-retryable: true
+            back-off-multiplier: 1
+        discussionRequestedProducer:
+          destination: library-discussion-requested
+        discussionCreatedProducer:
+          destination: library-discussion-created
+      kafka:
+        bindings:
+          discussionRequestedConsumer-in-0:
+            consumer:
+              autoCommitOffset: true
+              ackEachRecord: false
+              autoCommitOnError: true
+        binder:
+          brokers: ${KAFKA_BINDER_BROKERS:localhost} # A list of brokers to which the Kafka binder will connect.
+          defaultBrokerPort: ${DEFAULT_KAFKA_BROKER_PORT:29092} # This sets the default port when no port is configured in the broker list
+          configuration: # Key/Value map of client properties (both producers and consumer) passed to all clients created by the binder. Due to the fact that these properties will be used by both producers and consumers, usage should be restricted to common properties, especially security settings. Default: Empty map.
+            auto.offset.reset: earliest
+          healthTimeout: 10 # The time to wait to get partition information, in seconds. Health reports as down if this timer expires. Default: 10.
+          requiredAcks: 1 # The number of required acks on the broker.
+          minPartitionCount: 1 # Effective only if autoCreateTopics or autoAddPartitions is set
+          replicationFactor: 1 # The replication factor of auto-created topics if autoCreateTopics is active.
+          autoCreateTopics: true # If set to true, the binder will create new topics automatically.
+          autoAddPartitions: true # If set to true, the binder will create add new partitions if required
+  data:
+    mongodb:
+      uri: "mongodb://${MONGO_USER:user}:${MONGO_PASSWORD:pass}@\
+            ${MONGO_HOST:localhost}:${MONGO_PORT:27017}/book-service?authSource=admin&\
+            serverSelectionTimeoutMS=3000&\
+            connectTimeoutMS=3000&\
+            socketTimeoutMS=360000&\
+            minPoolSize=0&\
+            maxPoolSize=25&\
+            retryWrites=false&\
+            retryReads=true"

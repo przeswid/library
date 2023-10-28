@@ -19,7 +19,15 @@ public class Discussion {
   private final List<DomainEvent> domainEvents;
 
   public static Discussion newDiscussion(DiscussionOwnerId ownerId) {
-    return new Discussion(ownerId, new ArrayList<>(), new ArrayList<>());
+    return new Discussion(ownerId, new ArrayList<>());
+  }
+
+  public static Discussion fromSnapshot(DiscussionSnapshot snapshot) {
+    return new Discussion(snapshot.ownerId(), snapshot.posts());
+  }
+
+  public DiscussionSnapshot getSnapshot() {
+    return new DiscussionSnapshot(id, ownerId, posts);
   }
 
   public void restartDiscussion() {
@@ -30,10 +38,10 @@ public class Discussion {
     posts.add(new Post(content));
   }
 
-  Discussion(DiscussionOwnerId ownerId, List<Post> posts, List<DomainEvent> domainEvents) {
+  Discussion(DiscussionOwnerId ownerId, List<Post> posts) {
     this.ownerId = ownerId;
     this.posts = posts;
-    this.domainEvents = domainEvents;
+    this.domainEvents = new ArrayList<>();
     this.id = new DiscussionId(UUID.randomUUID().toString());
 
     domainEvents.add(new DiscussionCreated(id, ownerId));
