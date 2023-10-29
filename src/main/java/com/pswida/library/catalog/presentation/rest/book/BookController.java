@@ -1,4 +1,4 @@
-package com.pswida.library.catalog.presentation.rest;
+package com.pswida.library.catalog.presentation.rest.book;
 
 import com.pswida.library.catalog.application.book.commands.AddBookCommand;
 import com.pswida.library.catalog.application.book.queries.FindBookByTtitleQuery;

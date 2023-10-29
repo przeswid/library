@@ -4,7 +4,7 @@ import com.pswida.library.common.application.cqs.command.CommandHandler;
 import com.pswida.library.common.application.validator.ValidationException;
 import com.pswida.library.common.application.validator.ValidationResult;
 import com.pswida.library.catalog.domain.bookcopy.BookCopy;
-import com.pswida.library.catalog.domain.bookcopy.BookCopyRepository;
+import com.pswida.library.catalog.domain.bookcopy.BookCopyCommandRepository;
 import com.pswida.library.catalog.domain.bookcopy.BookCopySnapshot;
 import com.pswida.library.catalog.domain.bookcopy.event.BookCopyAdded;
 import com.pswida.library.catalog.domain.bookcopy.validator.BookCopyAddValidator;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 class AddBookCopyCommandHandler extends CommandHandler<AddBookCopyCommand> {
 
-  private final BookCopyRepository bookCopyRepository;
+  private final BookCopyCommandRepository bookCopyCommandRepository;
 
   private final BookCopyAddValidator validator;
 
@@ -28,7 +28,7 @@ class AddBookCopyCommandHandler extends CommandHandler<AddBookCopyCommand> {
     validateBookCopy(bookCopySnapshot);
 
     BookCopy bookCopy = BookCopy.fromSnapshot(bookCopySnapshot);
-    bookCopyRepository.add(bookCopy);
+    bookCopyCommandRepository.save(bookCopy);
     eventPublisher.publishEvent(new BookCopyAdded(command.bookIsbn(), command.bookCopyId()));
   }
 

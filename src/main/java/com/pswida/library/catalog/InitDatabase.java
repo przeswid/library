@@ -1,6 +1,10 @@
 package com.pswida.library.catalog;
 
 import com.pswida.library.catalog.domain.book.*;
+import com.pswida.library.catalog.domain.bookcopy.BookCopy;
+import com.pswida.library.catalog.domain.bookcopy.BookCopyCommandRepository;
+import com.pswida.library.catalog.domain.bookcopy.BookCopyId;
+import com.pswida.library.catalog.domain.bookcopy.BookCopySnapshot;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationListener;
@@ -8,12 +12,15 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @AllArgsConstructor
 public class InitDatabase implements ApplicationListener<ContextRefreshedEvent> {
 
   private final BookRepository bookRepository;
+
+  private final BookCopyCommandRepository bookCopyCommandRepository;
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -24,7 +31,6 @@ public class InitDatabase implements ApplicationListener<ContextRefreshedEvent> 
   private void initDatabase() {
     String isbn = "978-0261103252";
     addBook("The Lord of the Rings", isbn, List.of("J.R.R. Tolkien"), BookCategory.NOVEL);
-
     addBook("Le Petit Prince", "978-2070612758", List.of("Antoine de Saint-Exupéry"), BookCategory.NOVEL);
     addBook("Harry Potter and the Philosopher's Stone", "978-0747532743", List.of("J.K. Rowling"), BookCategory.NOVEL);
     addBook("And Then There Were None", "978-0312330873", List.of("Agatha Christie"), BookCategory.NOVEL);
@@ -44,11 +50,15 @@ public class InitDatabase implements ApplicationListener<ContextRefreshedEvent> 
       .bookCategory(category)
       .build();
     bookRepository.save(Book.fromSnapshot(bookSnapshot));
+    addBookCopy(isbn, isbn + "_1");
   }
 
-  private void addBookCopy(String bookIsbn) {
-//    commandDispatcher.dispatch(
-//      new AddBookCopyCommand(new BookIsbn(bookIsbn), new BookCopyId(UUID.randomUUID().toString())));
+  private void addBookCopy(String bookIsbn, String bookCopyId) {
+
+    bookCopyCommandRepository.save(BookCopy.fromSnapshot(BookCopySnapshot.builder()
+      .bookIsbn(new BookIsbn(bookIsbn))
+      .bookCopyId(new BookCopyId(bookCopyId))
+      .build()));
   }
 }
 
