@@ -12,7 +12,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -58,6 +57,7 @@ public class InitDatabase implements ApplicationListener<ContextRefreshedEvent> 
     bookCopyCommandRepository.save(BookCopy.fromSnapshot(BookCopySnapshot.builder()
       .bookIsbn(new BookIsbn(bookIsbn))
       .bookCopyId(new BookCopyId(bookCopyId))
+      .status(BookCopy.Status.AVAILABLE)
       .build()));
   }
 }

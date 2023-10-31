@@ -21,7 +21,6 @@ class TrackerService {
 
   @Scheduled(fixedDelay = 5000)
   void processTimedOutProcesses() {
-    log.info("Checking timed out trackers");
 
     List<ProcessTracker> trackers = processTrackerRepository.findTimedOutTrackers();
 

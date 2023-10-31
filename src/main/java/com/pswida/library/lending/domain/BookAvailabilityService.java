@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class BookAvailabilityDomainService {
+public class BookAvailabilityService {
 
   private final CatalogService catalogService;
 
