@@ -1,4 +1,4 @@
-package com.pswida.library.catalog.presentation.rest;
+package com.pswida.library.catalog.presentation.rest.book;
 
 import com.pswida.library.catalog.domain.book.BookCategory;
 import com.pswida.library.catalog.domain.book.BookDiscussion;
