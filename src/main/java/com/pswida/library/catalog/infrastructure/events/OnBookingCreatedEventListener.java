@@ -1,8 +1,8 @@
 package com.pswida.library.catalog.infrastructure.events;
 
 import com.pswida.library.catalog.application.book.commands.DiscussionProcessStartCommand;
-import com.pswida.library.common.application.cqs.command.CommandDispatcher;
 import com.pswida.library.catalog.domain.book.event.BookCreated;
+import com.pswida.library.common.application.cqs.command.CommandDispatcher;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cloud.stream.function.StreamBridge;

@@ -1,13 +1,13 @@
 package com.pswida.library.catalog.application.bookcopy.commands;
 
-import com.pswida.library.common.application.cqs.command.CommandHandler;
-import com.pswida.library.common.application.validator.ValidationException;
-import com.pswida.library.common.application.validator.ValidationResult;
 import com.pswida.library.catalog.domain.bookcopy.BookCopy;
 import com.pswida.library.catalog.domain.bookcopy.BookCopyCommandRepository;
 import com.pswida.library.catalog.domain.bookcopy.BookCopySnapshot;
 import com.pswida.library.catalog.domain.bookcopy.event.BookCopyAdded;
 import com.pswida.library.catalog.domain.bookcopy.validator.BookCopyAddValidator;
+import com.pswida.library.common.application.cqs.command.CommandHandler;
+import com.pswida.library.common.application.validator.ValidationException;
+import com.pswida.library.common.application.validator.ValidationResult;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

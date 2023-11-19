@@ -1,6 +1,8 @@
 package com.pswida.library.catalog.domain.book;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 import java.util.List;
 

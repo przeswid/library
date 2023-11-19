@@ -1,9 +1,9 @@
 package com.pswida.library.catalog.domain.book.validator;
 
-import com.pswida.library.common.application.validator.BaseValidatorService;
-import com.pswida.library.common.application.validator.Validator;
 import com.pswida.library.catalog.domain.book.BookRepository;
 import com.pswida.library.catalog.domain.book.BookSnapshot;
+import com.pswida.library.common.application.validator.BaseValidatorService;
+import com.pswida.library.common.application.validator.Validator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

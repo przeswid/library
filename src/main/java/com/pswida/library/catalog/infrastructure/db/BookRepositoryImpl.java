@@ -3,7 +3,6 @@ package com.pswida.library.catalog.infrastructure.db;
 import com.pswida.library.catalog.domain.book.Book;
 import com.pswida.library.catalog.domain.book.BookIsbn;
 import com.pswida.library.catalog.domain.book.BookRepository;
-import com.pswida.library.tracker.domain.ProcessTracker;
 import com.pswida.library.tracker.domain.ProcessTrackerId;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

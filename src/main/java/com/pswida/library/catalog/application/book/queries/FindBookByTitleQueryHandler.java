@@ -1,9 +1,9 @@
 package com.pswida.library.catalog.application.book.queries;
 
-import com.pswida.library.common.application.cqs.query.QueryHandler;
 import com.pswida.library.catalog.domain.book.Book;
 import com.pswida.library.catalog.domain.book.BookDiscussion;
 import com.pswida.library.catalog.domain.book.BookRepository;
+import com.pswida.library.common.application.cqs.query.QueryHandler;
 import com.pswida.library.discussion.domain.DiscussionId;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

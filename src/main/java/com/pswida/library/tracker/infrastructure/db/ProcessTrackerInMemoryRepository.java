@@ -1,9 +1,8 @@
 package com.pswida.library.tracker.infrastructure.db;
 
+import com.pswida.library.tracker.domain.ProcessTracker;
 import com.pswida.library.tracker.domain.ProcessTrackerId;
 import com.pswida.library.tracker.domain.ProcessTrackerRepository;
-import com.pswida.library.tracker.domain.ProcessTracker;
-import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
