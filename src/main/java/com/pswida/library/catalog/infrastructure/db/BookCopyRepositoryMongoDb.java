@@ -1,8 +1,8 @@
 package com.pswida.library.catalog.infrastructure.db;
 
-import com.pswida.library.catalog.infrastructure.db.document.BookCopyDocument;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.pswida.library.catalog.infrastructure.db.entity.BookCopyEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-interface BookCopyRepositoryMongoDb extends MongoRepository<BookCopyDocument, String> {
+interface BookCopyRepositoryMongoDb extends JpaRepository<BookCopyEntity, String> {
 
 }

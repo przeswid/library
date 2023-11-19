@@ -1,7 +1,7 @@
 package com.pswida.library.tracker.infrastructure.db;
 
 import com.pswida.library.tracker.infrastructure.db.document.ProcessTrackerDocument;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-interface ProcessTrackerSpringDataRepository extends MongoRepository<ProcessTrackerDocument, String> {
+interface ProcessTrackerSpringDataRepository extends JpaRepository<ProcessTrackerDocument, String> {
 }

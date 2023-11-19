@@ -40,9 +40,10 @@ class BookRepositoryImpl implements BookRepository {
 
   @Override
   public Optional<Book> getByTrackerId(ProcessTrackerId trackerId) {
-    return mongoRepository.findByDiscussion_TrackerIdAndDiscussion_Status(trackerId, ProcessTracker.Status.STARTED)
-      .map(mapper::mapBookDocumentToBookSnapshot)
-      .map(Book::fromSnapshot);
+//    return mongoRepository.findByDiscussion_TrackerIdAndDiscussion_Status(trackerId, ProcessTracker.Status.STARTED)
+//      .map(mapper::mapBookDocumentToBookSnapshot)
+//      .map(Book::fromSnapshot);
+    return Optional.empty();
   }
 
   @Override
