@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @AllArgsConstructor
@@ -33,6 +34,11 @@ class SqlDbUserRepository implements UserRepository {
   @Override
   public User getUserById(UserId userId) {
     return User.fromSnapshot(userMapper.mapUserDocumentToSnapshot(springDataRepository.getReferenceById(userId.id())));
+  }
+
+  @Override
+  public UserId nextUserId() {
+    return new UserId(UUID.randomUUID().toString());
   }
 
 }

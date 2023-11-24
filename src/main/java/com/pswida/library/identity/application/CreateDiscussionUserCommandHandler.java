@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-class CreateUserCommandHandler extends CommandHandler<CreateUserCommand> {
+class CreateDiscussionUserCommandHandler extends CommandHandler<CreateDiscussionUserCommand> {
 
   private final UserRepository userRepository;
 
@@ -21,17 +21,18 @@ class CreateUserCommandHandler extends CommandHandler<CreateUserCommand> {
 
   @Override
   @Transactional
-  protected void doHandle(CreateUserCommand command) {
+  protected void doHandle(CreateDiscussionUserCommand command) {
     if (userRepository.getUserByUsername(command.username()).isPresent()) {
       throw new RuntimeException("User already exists");
     }
-    User user = User.newUser(new UserId(UUID.randomUUID().toString()), command.username(), command.email());
+    UserId userId = userRepository.nextUserId();
+    User user = User.newUser(userId, command.username(), command.email());
     userRepository.save(user);
     user.domainEvents().forEach(eventPublisher::publishEvent);
   }
 
   @Override
-  protected Class<CreateUserCommand> commandType() {
-    return CreateUserCommand.class;
+  protected Class<CreateDiscussionUserCommand> commandType() {
+    return CreateDiscussionUserCommand.class;
   }
 }

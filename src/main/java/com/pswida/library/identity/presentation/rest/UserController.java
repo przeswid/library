@@ -2,7 +2,7 @@ package com.pswida.library.identity.presentation.rest;
 
 import com.pswida.library.common.application.cqs.command.CommandDispatcher;
 import com.pswida.library.identity.application.ChangeUserEmailCommand;
-import com.pswida.library.identity.application.CreateUserCommand;
+import com.pswida.library.identity.application.CreateDiscussionUserCommand;
 import com.pswida.library.identity.domain.User;
 import com.pswida.library.identity.domain.UserId;
 import com.pswida.library.identity.domain.UserRepository;
@@ -24,7 +24,7 @@ class UserController {
 
   @PostMapping(value = "/", consumes = "application/json")
   ResponseEntity<UserDto> createUser(@RequestBody CreateUserRequest createUserRequest) {
-    CreateUserCommand command = new CreateUserCommand(createUserRequest.username(), createUserRequest.email());
+    CreateDiscussionUserCommand command = new CreateDiscussionUserCommand(createUserRequest.username(), createUserRequest.email());
     commandDispatcher.dispatch(command);
     User createdUser = userRepository.getUserByUsername(command.username()).orElseThrow();
 
