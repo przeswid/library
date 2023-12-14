@@ -2,8 +2,8 @@ package com.pswida.library.catalog.domain.book;
 
 import com.pswida.library.catalog.domain.book.event.BookCreated;
 import com.pswida.library.common.domain.DomainEvent;
-import com.pswida.library.tracker.domain.ProcessTrackerId;
 import com.pswida.library.discussion.domain.DiscussionId;
+import com.pswida.library.tracker.domain.ProcessTrackerId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

@@ -1,0 +1,18 @@
+- At-least-once delivery - Consumer must be idempotent. This connector guarantees that records are delivered at least once to the Kafka topic. If the connector restarts, there may be some duplicate records in the Kafka topic.
+- Kafka connector on separate server (production env) + Kafka Connect operates as a separate service besides the Kafka broker.
+- we need to use @Transactional
+- we still use events publishers and listeners, but this time listener will save it to DB instead sending to Kafka
+- payload is json
+-
+
+--- DEBEZIUM ---
+By default, changes from one database table are written to a Kafka topic whose name corresponds to the table name.
+If needed, you can adjust the destination topic name by configuring Debezium’s topic routing transformation.
+For example, you can:
+- Route records to a topic whose name is different from the table’s name
+- Stream change event records for multiple tables into a single topic
+
+-- PROBLEMS TO DISCUSS --
+1. How many Outbox Tables - one per aggregate or one for all aggregates
+2. Id generation by DB
+

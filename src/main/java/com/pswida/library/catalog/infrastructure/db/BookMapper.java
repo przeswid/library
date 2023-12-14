@@ -2,15 +2,15 @@ package com.pswida.library.catalog.infrastructure.db;
 
 import com.pswida.library.catalog.domain.book.BookIsbn;
 import com.pswida.library.catalog.domain.book.BookSnapshot;
-import com.pswida.library.catalog.infrastructure.db.document.BookDocument;
+import com.pswida.library.catalog.infrastructure.db.entity.BookEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 interface BookMapper {
 
-  BookDocument mapBookSnapshotToBookDocument(BookSnapshot bookSnapshot);
+  BookEntity mapBookSnapshotToBookDocument(BookSnapshot bookSnapshot);
 
-  BookSnapshot mapBookDocumentToBookSnapshot(BookDocument bookDocument);
+  BookSnapshot mapBookDocumentToBookSnapshot(BookEntity bookEntity);
 
   default BookIsbn mapIsbn(String isbn) {
     return new BookIsbn(isbn);

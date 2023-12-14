@@ -1,10 +1,10 @@
 package com.pswida.library.catalog.application.book.commands;
 
-import com.pswida.library.common.application.cqs.command.CommandHandler;
 import com.pswida.library.catalog.domain.book.Book;
 import com.pswida.library.catalog.domain.book.BookRepository;
 import com.pswida.library.catalog.domain.book.BookSnapshot;
 import com.pswida.library.catalog.domain.book.validator.BookAddValidator;
+import com.pswida.library.common.application.cqs.command.CommandHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

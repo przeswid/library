@@ -1,7 +1,7 @@
 package com.pswida.library.tracker.application;
 
-import com.pswida.library.tracker.domain.ProcessTrackerRepository;
 import com.pswida.library.tracker.domain.ProcessTracker;
+import com.pswida.library.tracker.domain.ProcessTrackerRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.ApplicationEventPublisher;

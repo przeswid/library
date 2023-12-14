@@ -1,15 +1,18 @@
 package com.pswida.library.tracker.infrastructure.db.document;
 
 import com.pswida.library.tracker.domain.ProcessTracker;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.time.OffsetDateTime;
 
-@Document(collection = "process-tracker")
+@Entity
+@Table(schema = "tracker", name = "process_tracker")
 @Data
+@NoArgsConstructor
 public class ProcessTrackerDocument {
 
   @Id
@@ -22,6 +25,6 @@ public class ProcessTrackerDocument {
 
   private int retriedTimes;
 
-  private final Instant timeoutAt;
+  private Instant timeoutAt;
 
 }

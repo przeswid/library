@@ -3,12 +3,12 @@ package com.pswida.library.lending.infrastructure.db;
 import com.pswida.library.lending.domain.LendedBookCopyId;
 import com.pswida.library.lending.domain.LendingId;
 import com.pswida.library.lending.domain.LendingSnapshot;
-import com.pswida.library.lending.infrastructure.db.document.LendingDocument;
+import com.pswida.library.lending.infrastructure.db.entity.LendingEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 interface LendingMapper {
-  LendingDocument mapLendingSnapshotToLendingDocument(LendingSnapshot lendingSnapshot);
+  LendingEntity mapLendingSnapshotToLendingDocument(LendingSnapshot lendingSnapshot);
 
   default String mapLendingId(LendingId lendingId) {
     return lendingId.id();

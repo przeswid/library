@@ -1,7 +1,7 @@
 package com.pswida.library.catalog.domain.book;
 
-import com.pswida.library.tracker.domain.ProcessTrackerId;
 import com.pswida.library.discussion.domain.DiscussionId;
+import com.pswida.library.tracker.domain.ProcessTrackerId;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Value;

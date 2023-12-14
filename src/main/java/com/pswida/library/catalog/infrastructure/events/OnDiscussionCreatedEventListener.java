@@ -1,8 +1,8 @@
 package com.pswida.library.catalog.infrastructure.events;
 
 import com.pswida.library.catalog.application.book.commands.InitiateDiscussionCommand;
-import com.pswida.library.common.application.cqs.command.CommandDispatcher;
 import com.pswida.library.catalog.domain.book.BookIsbn;
+import com.pswida.library.common.application.cqs.command.CommandDispatcher;
 import com.pswida.library.discussion.domain.DiscussionId;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
